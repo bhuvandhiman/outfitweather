@@ -3,12 +3,16 @@ button.addEventListener("click", getWeather);
 
 async function getWeather(){
     const resultBox = document.getElementById("resultBox");
+    button.disabled = true;
+    resultBox.innerHTML = `<div><p>Fetching Weather and Outfit Suggestion...</p></div>`;
+    resultBox.classList.add("active");
     const cityValue = document.getElementById("city-input").value;
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityValue}&appid=${apiKey}&units=metric`;
     const response = await fetch(url);
     if(!response.ok){
         resultBox.innerHTML = `<div><p>City Not Found, Please try Again</p></div>`;
         resultBox.classList.add("active");
+        button.disabled = false;
         return;
     }
     const data = await response.json();
