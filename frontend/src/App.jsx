@@ -26,9 +26,16 @@ function App() {
   }
   
   useEffect(() => {                      
-    navigator.geolocation.getCurrentPosition((position) => {   
-      console.log(position.coords.latitude);
-      console.log(position.coords.longitude);
+    navigator.geolocation.getCurrentPosition(async (position) => {   
+      const latitude = position.coords.latitude;
+      const longitude  = position.coords.longitude;
+      const response = await fetch("http://localhost:3000/api/reverse-geocode", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({latitude, longitude})
+      })
+      const data = await response.json();
+      setCity(data.city);
     });                                        
   }, []);
       
