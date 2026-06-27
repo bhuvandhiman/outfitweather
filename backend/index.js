@@ -42,6 +42,14 @@ app.post("/api/outfit", async (req, res) => {
 
     res.json({temperature, feelsLike, humidity, description, outfitSuggestion});
 });
+app.post("/api/reverse-geocode", async (req, res) => {
+    const lat = req.body.latitude;
+    const lon = req.body.longitude;
+    const url = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    res.json({ city: data[0].name })
+});
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });

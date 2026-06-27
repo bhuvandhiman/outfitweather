@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
@@ -24,9 +24,29 @@ function App() {
     setResult(data);
     setLoading(false);
   }
+  
+  useEffect(() => {                      
+    navigator.geolocation.getCurrentPosition((position) => {   
+      console.log(position.coords.latitude);
+      console.log(position.coords.longitude);
+    });                                        
+  }, []);
+      
+  function getBackground(){
+    const hour = new Date().getHours();
+    if(hour > 5 && hour <= 8){
+      return "linear-gradient(to bottom, #FF9A8B, #FFD56F)";
+    }else if(hour > 8 && hour <= 17){
+      return "linear-gradient(to bottom, #4FACFE, #C2E9FB)";
+    }else if(hour > 17 && hour <= 19){
+      return "linear-gradient(to bottom, #FF7E5F, #FEB47B)";
+    }else if (hour > 19 || hour <= 5) {
+      return "linear-gradient(to bottom, #0F2027, #203A43, #2C5364)";
+    }
+  }
   return (
     <>
-      <div>
+      <div className="container" style={{background: getBackground(), minHeight: "100vh"}}>
         <input value={city} onChange={(e) => setCity(e.target.value)} placeholder='Enter City'></input>
         <button onClick={() => getOutfit()}>Get suggestions</button>
         {loading && <p>Loading...</p>}
