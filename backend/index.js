@@ -21,6 +21,7 @@ app.post("/api/outfit", async (req, res) => {
     const feelsLike = data.main.feels_like;
     const humidity = data.main.humidity;
     const description = data.weather[0].description;
+    const timezone = data.timezone;
 
     const prompt = `The current temperature is ${temperature}°C, but it feels like ${feelsLike}°C. The humidity is ${humidity}%, and the weather is described as ${description}. Based on these conditions, what outfit would you recommend for today?, Keep your response to 2-3 short sentences, no markdown formatting, no numbered lists — just plain conversational advice."`
     const groqUrl = `https://api.groq.com/openai/v1/chat/completions`;
@@ -40,7 +41,7 @@ app.post("/api/outfit", async (req, res) => {
     const groqData = await groqResponse.json();
     const outfitSuggestion = groqData.choices[0].message.content;
 
-    res.json({temperature, feelsLike, humidity, description, outfitSuggestion});
+    res.json({temperature, feelsLike, humidity, description, outfitSuggestion, timezone});
 });
 app.post("/api/reverse-geocode", async (req, res) => {
     const lat = req.body.latitude;

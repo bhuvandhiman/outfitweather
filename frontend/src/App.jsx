@@ -40,7 +40,15 @@ function App() {
   }, []);
       
   function getBackground(){
-    const hour = new Date().getHours();
+    let hour;
+    if(result){
+      const utcTime = new Date().getTime() + (new Date().getTimezoneOffset() * 60000);
+      const cityTime = new Date(utcTime + (result.timezone * 1000));
+      hour = cityTime.getHours(); 
+    }else{
+      hour = new Date().getHours();
+    }
+    
     if(hour > 5 && hour <= 8){
       return "linear-gradient(to bottom, #FF9A8B, #FFD56F)";
     }else if(hour > 8 && hour <= 17){
